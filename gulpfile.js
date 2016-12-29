@@ -1,13 +1,57 @@
 var gulp = require('gulp');
 var fs = require('fs');
+var filelog = require('gulp-filelog');
 var jasmine = require('gulp-jasmine-phantom');
+var include = require('gulp-include');
+var colours = require('colors');
+var uglify = require('gulp-uglify');
+var sass = require('gulp-sass');
 
 // Paths
 var environment;
 var repoRoot = __dirname + '/';
 var bowerRoot = __dirname + '/bower_components';
+var npmRoot = __dirname + '/node_modules';
 var docsAssetsFolder = __dirname + '/docs/assets';
 var buildToolsFolder = __dirname + '/build_tools';
+var buildToolsAssetsFolder = buildToolsFolder + '/assets';
+
+// Configuration
+var sassOptions = {
+  outputStyle: 'expanded',
+  lineNumbers: true,
+  includePaths: [
+    buildToolsAssetsFolder + '/scss',
+    repoRoot,
+    npmRoot,
+    npmRoot + '/govuk_frontend_toolkit/stylesheets/'
+  ],
+  sourceComments: true,
+  errLogToConsole: true
+};
+
+var uglifyOptions = {
+  mangle: false,
+  output: {
+    beautify: true,
+    semicolons: true,
+    comments: true,
+    indent_level: 2
+  },
+  compress: false
+};
+
+var logErrorAndExit = function logErrorAndExit(err) {
+  var printError = function (type, message) {
+    console.log('gulp ' + colours.red('ERR! ') + type + ': ' + message);
+  };
+
+  printError('message', err.message);
+  printError('file name', err.fileName);
+  printError('line number', err.lineNumber);
+  process.exit(1);
+
+};
 
 function copyFactory(resourceName, sourceFolder, targetFolder) {
 
@@ -41,6 +85,37 @@ gulp.task('clean', function (cb) {
     fs.mkdir(docsAssetsFolder + '/images', complete);
   });
 });
+
+gulp.task('sass', function () {
+  var stream = gulp.src(buildToolsAssetsFolder + '/scss/application.scss')
+    .pipe(filelog('Compressing SCSS files'))
+    .pipe(
+      sass(sassOptions))
+        .on('error', logErrorAndExit)
+    .pipe(gulp.dest(docsAssetsFolder + '/stylesheets'));
+
+  stream.on('end', function () {
+    console.log('💾  Compressed CSS saved as .css files in ' + docsAssetsFolder + '/stylesheets');
+  });
+
+  return stream;
+});
+
+gulp.task('js', function () {
+  var stream = gulp.src(buildToolsAssetsFolder + '/javascripts/application.js')
+    .pipe(filelog('Compressing JavaScript files'))
+    .pipe(include())
+    .pipe(uglify(
+      uglifyOptions
+    ))
+    .pipe(gulp.dest(docsAssetsFolder + '/javascripts'));
+
+  stream.on('end', function () {
+    console.log('💾 Compressed JavaScript saved as ' + docsAssetsFolder + '/javascripts/application.js');
+  });
+
+  return stream;
+})
 
 gulp.task(
   'copy:govuk_template:stylesheets',
@@ -109,7 +184,10 @@ gulp.task(
   [
     'copy'
   ],
-  function() {}
+  function() {
+    gulp.start('sass');
+    gulp.start('js');
+  }
 );
 
 gulp.task('build:assets', ['clean'], function () {
