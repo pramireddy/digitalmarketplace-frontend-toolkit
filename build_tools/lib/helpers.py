@@ -16,4 +16,19 @@ class Pages(object):
 
     def all(self):
         return self._pages
-                
+
+    def breadcrumb(self, path, prefix=''):
+        breadcrumb = []
+        hierarchy = path.split('/')
+
+        for idx, step in enumerate(hierarchy):
+            current_steps = hierarchy[0:(idx + 1)]
+            current_path = os.path.join(*current_steps)
+            page = self._pages[current_path]
+            breadcrumb.append({
+                'title' : page.get_context()['title'],
+                'href' : '{}{}'.format(prefix, current_path)
+            })
+
+        return breadcrumb
+            
