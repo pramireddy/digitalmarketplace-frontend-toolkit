@@ -1,5 +1,7 @@
 import os
 import sys
+import shutil
+import tempfile
 
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 test_dir = os.path.abspath(os.path.dirname(__file__))
@@ -11,7 +13,7 @@ tools_dir = os.path.join(
 sys.path.append(os.path.join(tools_dir, 'lib'))
 
 from pages import Page, Index, Pattern
-from helpers import Pages
+from helpers import Pages, DocsBuilder
 
 class TestPages(object):
     def setup_method(self):
@@ -71,3 +73,19 @@ class TestPages(object):
                 'href' : 'https://user.github.com/patterns/index/pattern_2'
             }
         ]
+
+
+class TestDocsBuilder(object):
+    def setup_method(self):
+        self.builder = DocsBuilder(os.path.join(test_dir, 'fixtures'))
+        self.temp_dir = tempfile.mkdtemp()
+        self.builder.build(self.temp_dir)
+
+    def teardown_method(self):
+        shutil.rmtree(self.temp_dir)
+
+    def test_all_pages_are_built(self):
+        assert os.path.exists(os.path.join(self.temp_dir, 'index', 'index.html'))
+        assert os.path.exists(os.path.join(self.temp_dir, 'pattern', 'index.html'))
+        assert os.path.exists(os.path.join(self.temp_dir, 'index', 'pattern_2', 'index.html'))
+

@@ -31,4 +31,28 @@ class Pages(object):
             })
 
         return breadcrumb
-            
+
+
+class DocsBuilder(object):
+    def __init__(self, src_root):
+        self.src_root = src_root
+        self.pages = Pages(src_root)
+        self._add_pages()
+
+    def _add_pages(self):
+        for dirpath, dirnames, filenames in os.walk(self.src_root):
+            self.pages.add(dirpath, dirnames, filenames)
+
+    def log(self, message):
+        print(message)
+
+    def build(self, dst_root):
+        for path, page in self.pages.all().items():
+            abspath = os.path.abspath(os.path.join(dst_root, path))
+            if not os.path.exists(abspath):
+                os.mkdir(abspath)
+
+            filepath = os.path.join(abspath, 'index.html')
+            with open(filepath, 'w') as file:
+                file.write(page.render())
+                self.log('{} created'.format(filepath))
