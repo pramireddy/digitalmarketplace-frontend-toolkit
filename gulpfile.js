@@ -12,16 +12,16 @@ var environment;
 var repoRoot = __dirname + '/';
 var bowerRoot = __dirname + '/bower_components';
 var npmRoot = __dirname + '/node_modules';
+var docsSrcFolder = __dirname + '/docs_src';
+var docsSrcAssetsFolder = docsSrcFolder + '/assets';
 var docsAssetsFolder = __dirname + '/docs/assets';
-var buildToolsFolder = __dirname + '/build_tools';
-var buildToolsAssetsFolder = buildToolsFolder + '/assets';
 
 // Configuration
 var sassOptions = {
   outputStyle: 'expanded',
   lineNumbers: true,
   includePaths: [
-    buildToolsAssetsFolder + '/scss',
+    docsSrcAssetsFolder + '/scss',
     repoRoot,
     npmRoot,
     npmRoot + '/govuk_frontend_toolkit/stylesheets/'
@@ -87,7 +87,7 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('sass', function () {
-  var stream = gulp.src(buildToolsAssetsFolder + '/scss/application.scss')
+  var stream = gulp.src(docsSrcAssetsFolder + '/scss/application.scss')
     .pipe(filelog('Compressing SCSS files'))
     .pipe(
       sass(sassOptions))
@@ -102,7 +102,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('js', function () {
-  var stream = gulp.src(buildToolsAssetsFolder + '/javascripts/application.js')
+  var stream = gulp.src(docsSrcAssetsFolder + '/javascripts/application.js')
     .pipe(filelog('Compressing JavaScript files'))
     .pipe(include())
     .pipe(uglify(
