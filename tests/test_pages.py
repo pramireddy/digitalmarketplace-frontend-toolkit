@@ -12,9 +12,7 @@ tools_dir = os.path.join(
 
 sys.path.append(os.path.join(tools_dir, 'lib'))
 
-from Page import Page
-from Index import Index
-from Pattern import Pattern
+from pages import Page, Index, Pattern
 
 env = Environment(
     loader=FileSystemLoader([
