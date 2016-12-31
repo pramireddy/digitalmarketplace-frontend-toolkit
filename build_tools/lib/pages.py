@@ -39,7 +39,7 @@ class Page(object):
 class Index(Page):
     def __init__(self, dirpath, dirnames, filenames):
         super(Index, self).__init__(dirpath, dirnames, filenames)
-        self._template = self._env.get_template('_index.html')
+        self._template = self._env.get_template('index.html')
 
     def get_meta(self):
         index_meta = os.path.join(self.dirpath, 'index.yml')
@@ -60,7 +60,7 @@ class Pattern(Page):
 
     def __init__(self, dirpath, dirnames, filenames):
         super(Pattern, self).__init__(dirpath, dirnames, filenames)
-        self._template = self._env.get_template('_pattern.html')
+        self._template = self._env.get_template('pattern.html')
 
     def get_examples(self):
         examples = []

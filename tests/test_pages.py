@@ -26,10 +26,10 @@ class TestIndexPage(object):
         index = Index(os.path.join(test_dir, 'fixtures', 'index'), [], ['index.yml'])
         assert index.get_context()['title'] == 'Digital Marketplace frontend toolkit'
 
-        template = env.get_template('_index.html')
+        template = env.get_template('index.html')
 
         index.set_env(env)
-        index.set_template('_index.html')
+        index.set_template('index.html')
         assert index.render() == template.render(index.get_context())
 
 class TestPatternPage(object):
@@ -55,7 +55,7 @@ class TestPatternPage(object):
         assert self.pattern.get_examples() == self.examples
 
     def test_pages_renders_correctly(self):
-        page_template = env.get_template('_pattern.html')
+        page_template = env.get_template('pattern.html')
         context = { 'asset_path' : 'assets/' }
         with open(os.path.join(test_dir, 'fixtures', 'pattern', 'pattern.yml'), 'r') as file:
             context.update(yaml.load(file))
