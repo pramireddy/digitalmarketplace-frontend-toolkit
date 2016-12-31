@@ -20,6 +20,9 @@ class Page(object):
         self.dirpath = dirpath
         self.dirnames = dirnames
         self.filenames = filenames
+        self._context = {
+            'asset_path' : 'assets/'
+        }
 
     def set_env(self, env):
         self._env = env
@@ -45,7 +48,9 @@ class Index(Page):
         return meta
 
     def get_context(self):
-        return self.get_meta()
+        context = self._context
+        context.update(self.get_meta())
+        return context
 
 
 class Pattern(Page):
@@ -81,6 +86,7 @@ class Pattern(Page):
         return meta
 
     def get_context(self):
-        context = self.get_meta()
+        context = self._context
+        context.update(self.get_meta())
         context['examples'] = self.get_examples()
         return context
