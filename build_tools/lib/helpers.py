@@ -1,4 +1,5 @@
 import os
+import codecs
 from collections import OrderedDict
 from pages import Index, Pattern
 
@@ -53,6 +54,6 @@ class DocsBuilder(object):
                 os.mkdir(abspath)
 
             filepath = os.path.join(abspath, 'index.html')
-            with open(filepath, 'w') as file:
+            with codecs.open(filepath, 'w', 'utf-8') as file:
                 file.write(page.render())
                 self.log('{} created'.format(filepath))
