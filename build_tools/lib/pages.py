@@ -8,10 +8,12 @@ repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 class Page(object):
     docs_root = os.path.join(repo_root, 'docs_src', 'docs') 
     templates_root = os.path.join(repo_root, 'docs_src', 'templates')
+    govuk_template_dir = os.path.join(repo_root, 'bower_components', 'govuk_template', 'views', 'layouts')
 
     def __init__(self, dirpath, dirnames, filenames):
         self._env = Environment(
             loader=FileSystemLoader([
+                self.govuk_template_dir,
                 self.templates_root,
                 self.docs_root
             ]),

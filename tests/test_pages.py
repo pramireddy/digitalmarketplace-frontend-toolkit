@@ -17,7 +17,8 @@ from pages import Page, Index, Pattern
 env = Environment(
     loader=FileSystemLoader([
         os.path.join(test_dir, 'fixtures'),
-        os.path.join(repo_root, 'docs_src', 'templates')]),
+        os.path.join(repo_root, 'docs_src', 'templates'),
+        os.path.join(repo_root, 'bower_components', 'govuk_template', 'views', 'layouts')]),
     extensions=['jinja2.ext.with_'])
 
 class TestIndexPage(object):
