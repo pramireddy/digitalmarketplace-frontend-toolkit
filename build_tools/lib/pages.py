@@ -1,5 +1,6 @@
 import os
 import yaml
+import codecs
 from jinja2 import Environment, FileSystemLoader
 
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -38,7 +39,7 @@ class Index(Page):
     def get_meta(self):
         index_meta = os.path.join(self.dirpath, 'index.yml')
 
-        with open(index_meta, 'r') as file:
+        with codecs.open(index_meta, 'r') as file:
             meta = yaml.load(file.read())
 
         return meta
