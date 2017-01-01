@@ -4,6 +4,7 @@ import codecs
 from jinja2 import Environment, FileSystemLoader
 
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+asset_path = os.getenv('DM_TOOLKIT_ASSET_PATH') or '/assets/'
 
 class Page(object):
     docs_root = os.path.join(repo_root, 'docs_src', 'docs') 
@@ -23,7 +24,7 @@ class Page(object):
         self.dirnames = dirnames
         self.filenames = filenames
         self._context = {
-            'asset_path' : 'assets/'
+            'asset_path' : asset_path
         }
 
     def set_env(self, env):
