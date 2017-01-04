@@ -5,6 +5,7 @@ venv
 npm-debug.log
 govuk_template
 /pages
+docs
 gh-pages
 node_modules
 bower_components
