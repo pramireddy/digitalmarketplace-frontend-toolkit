@@ -2,4 +2,12 @@
 
 {% block breadcrumb %}{% endblock %}
 {% block main_content %}
+  <header class="page-heading">
+    <h1>{{ title }}</h1>
+  </header>
+  <p>{{ description }}</p>
+  {% for example in examples %}
+    {{ example.html }}
+    <pre>{{ example.code }}</pre>
+  {% endfor %}
 {% endblock %}

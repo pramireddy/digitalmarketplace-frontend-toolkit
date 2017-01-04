@@ -1,0 +1,21 @@
+/* Styles from govuk_frontend_toolkit used in this file */
+@import "_measurements.scss";
+@import "_grid_layout.scss";
+
+/* Shared styles for all pages */
+
+/* Main column */
+#wrapper {
+  @extend %site-width-container;
+}
+
+#content {
+  @extend %contain-floats;
+  clear: both;
+  margin-bottom: $gutter * 2;
+}
+
+/* Toolkit styles */
+
+/* Styles for complete patterns */
+@import "toolkit/scss/_page-headings.scss";
