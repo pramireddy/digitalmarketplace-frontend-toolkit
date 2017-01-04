@@ -11,7 +11,8 @@ sys.path.append(os.path.join('build_tools', 'lib'))
 from helpers import DocsBuilder
 
 if __name__ == '__main__':
-    shutil.rmtree(docs_dir)
+    if os.path.exists(docs_dir):
+        shutil.rmtree(docs_dir)
     os.mkdir(docs_dir)
     builder = DocsBuilder(docs_data_dir)
     builder.build(os.path.join(repo_root, 'docs'))

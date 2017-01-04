@@ -18,3 +18,12 @@ serve_pages: generate_pages
 
 watch_for_changes: generate_pages
 	${VIRTUALENV_ROOT}/bin/python pages_builder/watch_for_changes.py
+
+build_assets:
+	npm run build-assets
+
+build_pages:
+	${VIRTUALENV_ROOT}/bin/python build_tools/scripts/build_docs.py
+
+docs: build_pages build_assets
+	
