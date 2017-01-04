@@ -23,6 +23,7 @@ var sassOptions = {
   includePaths: [
     docsSrcAssetsFolder + '/scss',
     repoRoot,
+    repoRoot + '/toolkit/scss',
     npmRoot,
     npmRoot + '/govuk_frontend_toolkit/stylesheets/'
   ],

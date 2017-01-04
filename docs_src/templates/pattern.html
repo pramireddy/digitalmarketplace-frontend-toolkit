@@ -1,11 +1,41 @@
 {% extends "_base_page.html" %}
 
+{% set github = 'https://github.com/alphagov/digitalmarketplace-frontend-toolkit/blob/master' -%}
+{% set dependency_types = [
+  {
+    'name' : 'HTML',
+    'key' : 'html'
+  },
+  {
+    'name' : 'Sass',
+    'key' : 'scss'
+  },
+  {
+    'name' : 'JavaScript',
+    'key' : 'js'
+  }
+] -%}
+
 {% block breadcrumb %}{% endblock %}
 {% block main_content %}
   <header class="page-heading">
     <h1>{{ title }}</h1>
   </header>
   <p>{{ description }}</p>
+  <h2>Dependencies</h2>
+  {% for type in dependency_types %}
+    {% if type.key in dependencies %}
+      {% set dependency_type = dependencies[type.key] -%}
+      <h3>{{ type.name }}</h3>
+      <ul class="list-bullet">
+        {% for path in dependency_type %}
+          <li>
+            <a href="{{ github }}/{{ path }}" rel="external">{{ path }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endfor %}
   {% for example in examples %}
     {{ example.html }}
     <pre>{{ example.code }}</pre>

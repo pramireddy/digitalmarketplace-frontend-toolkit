@@ -17,5 +17,10 @@
 
 /* Toolkit styles */
 
+/* Shared toolkit styles */
+@import "toolkit/scss/shared_scss/_reset.scss";
+@import "toolkit/scss/shared_scss/_lists.scss";
+
 /* Styles for complete patterns */
 @import "toolkit/scss/_page-headings.scss";
+@import "toolkit/scss/_buttons.scss";
