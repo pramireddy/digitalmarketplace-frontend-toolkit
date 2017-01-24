@@ -1,33 +1,44 @@
 import os
 import yaml
 import pprint
+import codecs
 
 repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 existing_docs = os.path.join(repo_root, 'pages_builder', 'pages')
-pp = pprint.PrettyPrinter(indent=2)
+pp = pprint.PrettyPrinter(indent=4)
 props_to_ignore = ['assetPath']
 prop_mapping = {
     'pageTitle' : 'title',
     'pageDescription': 'description',
     'grid': 'grid'
 }
+with_block_start = \
+"""{%
+    with"""
+with_block_end = \
+"""%}}
+    {{% include "toolkit/{}" %}}
+{{% endwith %}}
+"""
 
 def get_data_from_file(path):
     data = {}
-    with open(path, 'r') as file:
+    with codecs.open(path, 'r', 'utf-8') as file:
         contents = yaml.load(file.read())
     return contents
 
 
-def render_examples_as_files(data, newpath):
+def render_examples_as_files(data, newpath, template):
     # write file for each example
         examples_dir = os.path.join(newpath, 'examples')
         if not os.path.exists(examples_dir):
             os.mkdir(examples_dir)
         
         for idx, example in enumerate(data['examples']):
-            with open(os.path.join(examples_dir, 'example_{}.html'.format(idx + 1)), 'w') as file:
-                file.write(pp.pformat(example))
+            with codecs.open(os.path.join(examples_dir, 'example_{}.html'.format(idx + 1)), 'w', 'utf-8') as file:
+                data = pp.pformat(example)
+                block_end = with_block_end.format(template.replace('.yml', '.html'))
+                file.write(os.linesep.join([with_block_start, data, block_end]))
 
 def organise_data(data):
     for prop_to_ignore in props_to_ignore:
@@ -59,7 +70,7 @@ if __name__ == '__main__':
                     data = get_data_from_file(os.path.join(dirpath, file))
                     if 'examples' in data:
                         print('Rendering {} example files for {}'.format(len(data['examples']), pattern_dir_path))
-                        render_examples_as_files(data, pattern_dir_path)
+                        render_examples_as_files(data, pattern_dir_path, file)
                         del data['examples']
 
                     data = organise_data(data)
